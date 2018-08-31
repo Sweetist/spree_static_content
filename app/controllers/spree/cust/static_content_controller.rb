@@ -1,0 +1,28 @@
+module Spree
+  module Cust
+    class StaticContentController < Spree::Cust::CustomerHomeController
+      rescue_from ActiveRecord::RecordNotFound, with: :render_404
+      before_action :ensure_user_has_accounts
+
+      helper 'spree/products'
+      layout :determine_layout
+
+      def show
+        @vendor = current_vendor
+        @page = Spree::Page.by_store(current_store).visible.find_by_slug!(request.path)
+        @pages_footer = @vendor.pages.footer_links
+      end
+
+      private
+
+      def determine_layout
+        return @page.layout if @page && @page.layout.present? && !@page.render_layout_as_partial?
+        'frontend-customer'
+      end
+
+      def accurate_title
+        @page ? (@page.meta_title.present? ? @page.meta_title : @page.title) : nil
+      end
+    end
+  end
+end

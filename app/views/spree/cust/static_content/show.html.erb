@@ -10,6 +10,9 @@
     <meta name="keywords" content="<%= @page.meta_keywords %>">
     <meta name="description" content="<%= @page.meta_description %>">
   <% end -%>
+  <%= content_for :head_title do %>
+    <%= @page.title %>
+  <% end %>
 
   <% content_for :sidebar do %>
     <% if (defined?(@products) && @products) && (defined?(@taxon) && @taxon) %>
@@ -18,9 +21,15 @@
       <%= render partial: 'spree/shared/taxonomies' %>
     <% end %>
   <% end %>
-
-  <h1><%= @page.title %></h1>
-  <div id="page_content">
-    <%= raw @page.body %>
+  <div class="content">
+    <div class="row">
+      <h1><%= @page.title %></h1>
+      <div id="page_content">
+        <%= raw @page.body %>
+      </div>
+    </div>
   </div>
+  <%= content_for :static_footer do %>
+    <%= render partial: 'spree/cust/products/static_content_footer' if @pages_footer.present? %>
+  <% end %>
 <% end %>

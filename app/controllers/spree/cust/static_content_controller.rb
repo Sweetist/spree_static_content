@@ -11,7 +11,7 @@ module Spree
         @customer = current_customer
         @vendors = @customer.vendors.order('name ASC')
         @vendor = current_vendor || @vendors.first
-        @page = Spree::Page.by_store(current_store).visible.find_by_slug!(request.path)
+        @page = @vendor.pages.visible.find_by_slug!(request.path)
         @pages_footer = @vendor.pages.footer_links
       end
 

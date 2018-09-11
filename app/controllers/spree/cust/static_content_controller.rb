@@ -10,9 +10,15 @@ module Spree
       def show
         @customer = current_customer
         @vendors = @customer.vendors.order('name ASC')
-        @vendor = current_vendor || @vendors.first
-        @page = @vendor.pages.visible.find_by_slug!(request.path)
-        @pages_footer = @vendor.pages.footer_links
+        @vendor = current_vendor
+        if @vendor.present?
+          @page = @vendor.pages.visible.find_by_slug!(request.path)
+          @pages_footer = @vendor.pages.footer_links
+          render :show
+        else
+          flash[:error] = 'We were unable to find the page you requested.'
+          redirect_to root_path
+        end
       end
 
       private

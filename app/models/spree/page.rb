@@ -6,7 +6,7 @@ class Spree::Page < ActiveRecord::Base
   validates :title, presence: true
   validates :slug, :body, presence: true, if: :not_using_foreign_link?
   validates :layout, presence: true, if: :render_layout_as_partial?
-  validates :slug, uniqueness: true, if: :not_using_foreign_link?
+  validates_uniqueness_of :slug, scope: :company_id, if: :not_using_foreign_link?
   validates :foreign_link, uniqueness: true, allow_blank: true
 
   scope :visible, -> { where(visible: true) }
@@ -16,7 +16,7 @@ class Spree::Page < ActiveRecord::Base
 
   scope :by_store, ->(store) { joins(:stores).where('spree_pages_stores.store_id = ?', store) }
 
-  before_save :update_positions_and_slug
+  before_validation :update_positions_and_slug
 
   def initialize(*args)
     super(*args)

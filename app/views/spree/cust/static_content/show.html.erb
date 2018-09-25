@@ -10,6 +10,9 @@
     <meta name="keywords" content="<%= @page.meta_keywords %>">
     <meta name="description" content="<%= @page.meta_description %>">
   <% end -%>
+  <%= content_for :head_title do %>
+    <%= @page.title %>
+  <% end %>
 
   <% content_for :sidebar do %>
     <% if (defined?(@products) && @products) && (defined?(@taxon) && @taxon) %>
@@ -19,8 +22,24 @@
     <% end %>
   <% end %>
 
-  <h1><%= @page.title %></h1>
-  <div id="page_content">
-    <%= raw @page.body %>
+  <% if @pages_header.present? %>
+    <%= content_for :cust_banner do %>
+      <div class='container static-pages' style='min-height: 93px'>
+        <ul class="list-unstyled list-inline center-block" style="margin-top: 25px">
+          <%= render partial: 'spree/cust/products/static_content_list', collection: @pages_header, as: :page %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+  
+  <div class="content">
+    <div class="row">
+      <div id="page_content">
+        <%= raw @page.body %>
+      </div>
+    </div>
   </div>
+  <%= content_for :static_footer do %>
+    <%= render partial: 'spree/cust/products/static_content_footer' if @pages_footer.present? %>
+  <% end %>
 <% end %>

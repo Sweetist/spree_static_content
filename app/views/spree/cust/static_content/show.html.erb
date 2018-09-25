@@ -21,6 +21,17 @@
       <%= render partial: 'spree/shared/taxonomies' %>
     <% end %>
   <% end %>
+
+  <% if @pages_header.present? %>
+    <%= content_for :cust_banner do %>
+      <div class='container static-pages' style='min-height: 93px'>
+        <ul class="list-unstyled list-inline center-block" style="margin-top: 25px">
+          <%= render partial: 'spree/cust/products/static_content_list', collection: @pages_header, as: :page %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+  
   <div class="content">
     <div class="row">
       <div id="page_content">

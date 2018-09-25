@@ -13,6 +13,7 @@ module Spree
         if @vendor.present?
           @page = @vendor.pages.visible.find_by_slug!(request.path)
           @pages_footer = @vendor.pages.footer_links
+          @pages_header = @vendor.pages.header_links
           render :show
         else
           flash[:error] = 'We were unable to find the page you requested.'
